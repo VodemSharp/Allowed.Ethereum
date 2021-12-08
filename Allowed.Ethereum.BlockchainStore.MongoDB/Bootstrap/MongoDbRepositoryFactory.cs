@@ -12,9 +12,9 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Bootstrap
     public class MongoDbRepositoryFactory : IBlockchainStoreRepositoryFactory, IBlockProgressRepositoryFactory
     {
         public static MongoDbRepositoryFactory Create(string connectionString,
-            string tag, string locale, bool deleteAllExistingCollections = false)
+            string databaseName, string locale, bool deleteAllExistingCollections = false)
         {
-            MongoDbRepositoryFactory factory = new(connectionString, tag);
+            MongoDbRepositoryFactory factory = new(connectionString, databaseName);
 
             IMongoDatabase db = factory.CreateDbIfNotExists();
 
@@ -29,9 +29,9 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Bootstrap
         private readonly IMongoClient _client;
         private readonly string _databaseName;
 
-        public MongoDbRepositoryFactory(string connectionString, string dbTag)
+        public MongoDbRepositoryFactory(string connectionString, string databaseName)
         {
-            _databaseName = "BlockchainStorage" + dbTag ?? string.Empty;
+            _databaseName = databaseName ?? "BlockchainStorage";
             _client = new MongoClient(connectionString);
         }
 
