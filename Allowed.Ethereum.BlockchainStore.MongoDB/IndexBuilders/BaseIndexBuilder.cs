@@ -1,6 +1,8 @@
 ﻿using Allowed.Ethereum.BlockchainStore.MongoDB.Entities;
 using Allowed.Ethereum.BlockchainStore.MongoDB.Repositories;
 using MongoDB.Driver;
+using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Allowed.Ethereum.BlockchainStore.MongoDB.IndexBuilders

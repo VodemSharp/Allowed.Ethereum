@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using Allowed.Ethereum.BlockchainStore.MongoDB.Entities;
+﻿using Allowed.Ethereum.BlockchainStore.MongoDB.Entities;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
 namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 {
@@ -21,7 +20,7 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
         protected async Task UpsertDocumentAsync(TDocument updatedDocument)
         {
             await Collection.ReplaceOneAsync(CreateDocumentFilter(updatedDocument), updatedDocument,
-                new UpdateOptions() { IsUpsert = true });
+                new ReplaceOptions() { IsUpsert = true });
         }
 
         protected FilterDefinition<TDocument> CreateDocumentFilter(string id)

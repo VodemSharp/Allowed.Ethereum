@@ -5,6 +5,7 @@ using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
 using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.Hex.HexTypes;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 {
@@ -16,23 +17,23 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task<IBlockView> FindByBlockNumberAsync(HexBigInteger blockNumber)
         {
-            var filter = CreateDocumentFilter(
+            FilterDefinition<MongoDbBlock> filter = CreateDocumentFilter(
                 new MongoDbBlock() { Id = blockNumber.Value.ToString() });
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
+            MongoDbBlock response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
             return response;
         }
 
         public async Task<BigInteger?> GetMaxBlockNumberAsync()
         {
-            var count = await Collection.CountDocumentsAsync(FilterDefinition<MongoDbBlock>.Empty).ConfigureAwait(false);
+            long count = await Collection.CountDocumentsAsync(FilterDefinition<MongoDbBlock>.Empty).ConfigureAwait(false);
 
             if (count == 0)
             {
                 return null;
             }
 
-            var max = await Collection.Find(FilterDefinition<MongoDbBlock>.Empty).Limit(1)
+            string max = await Collection.Find(FilterDefinition<MongoDbBlock>.Empty).Limit(1)
                 .Sort(new SortDefinitionBuilder<MongoDbBlock>().Descending(block => block.BlockNumber))
                 .Project(block => block.BlockNumber).SingleOrDefaultAsync().ConfigureAwait(false);
 
@@ -41,7 +42,7 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task UpsertBlockAsync(Nethereum.RPC.Eth.DTOs.Block source)
         {
-            var block = source.MapToStorageEntityForUpsert<MongoDbBlock>();
+            MongoDbBlock block = source.MapToStorageEntityForUpsert<MongoDbBlock>();
             await UpsertDocumentAsync(block).ConfigureAwait(false);
         }
     }

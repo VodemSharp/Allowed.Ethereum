@@ -17,15 +17,15 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task<ITransactionLogView> FindByTransactionHashAndLogIndexAsync(string hash, BigInteger idx)
         {
-            var filter = CreateDocumentFilter(new MongoDbTransactionLog { TransactionHash = hash, LogIndex = idx.ToString() });
+            FilterDefinition<MongoDbTransactionLog> filter = CreateDocumentFilter(new MongoDbTransactionLog { TransactionHash = hash, LogIndex = idx.ToString() });
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
+            MongoDbTransactionLog response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
             return response;
         }
 
         public async Task UpsertAsync(FilterLogVO log)
         {
-            var transactionLog = log.MapToStorageEntityForUpsert<MongoDbTransactionLog>();
+            MongoDbTransactionLog transactionLog = log.MapToStorageEntityForUpsert<MongoDbTransactionLog>();
             await UpsertDocumentAsync(transactionLog).ConfigureAwait(false);
         }
     }

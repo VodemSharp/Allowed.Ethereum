@@ -17,22 +17,22 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task<ITransactionView> FindByBlockNumberAndHashAsync(HexBigInteger blockNumber, string hash)
         {
-            var filter = CreateDocumentFilter(new MongoDbTransaction()
+            FilterDefinition<MongoDbTransaction> filter = CreateDocumentFilter(new MongoDbTransaction()
             { Hash = hash, BlockNumber = blockNumber.Value.ToString() });
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
+            MongoDbTransaction response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
             return response;
         }
 
         public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO, string code, bool failedCreatingContract)
         {
-            var tx = transactionReceiptVO.MapToStorageEntityForUpsert<MongoDbTransaction>(code, failedCreatingContract);
+            MongoDbTransaction tx = transactionReceiptVO.MapToStorageEntityForUpsert<MongoDbTransaction>(code, failedCreatingContract);
             await UpsertDocumentAsync(tx).ConfigureAwait(false);
         }
 
         public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO)
         {
-            var tx = transactionReceiptVO.MapToStorageEntityForUpsert<MongoDbTransaction>();
+            MongoDbTransaction tx = transactionReceiptVO.MapToStorageEntityForUpsert<MongoDbTransaction>();
             await UpsertDocumentAsync(tx).ConfigureAwait(false);
         }
     }

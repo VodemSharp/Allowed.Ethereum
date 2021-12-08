@@ -1,26 +1,27 @@
 ﻿using Allowed.Ethereum.BlockchainStore.MongoDB.IndexBuilders;
 using Allowed.Ethereum.BlockchainStore.MongoDB.Repositories;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.BlockchainProcessing.ProgressRepositories;
+using System;
+using System.Threading.Tasks;
 
 namespace Allowed.Ethereum.BlockchainStore.MongoDB.Bootstrap
 {
     public class MongoDbRepositoryFactory : IBlockchainStoreRepositoryFactory, IBlockProgressRepositoryFactory
     {
-        public static MongoDbRepositoryFactory Create(IConfigurationRoot config, string connectionString,
+        public static MongoDbRepositoryFactory Create(string connectionString,
             string tag, string locale, bool deleteAllExistingCollections = false)
         {
-            var factory = new MongoDbRepositoryFactory(connectionString, tag);
+            MongoDbRepositoryFactory factory = new(connectionString, tag);
 
-            var db = factory.CreateDbIfNotExists();
+            IMongoDatabase db = factory.CreateDbIfNotExists();
 
             if (deleteAllExistingCollections)
-                factory.DeleteAllCollections(db).Wait();
+                DeleteAllCollections(db).Wait();
 
-            factory.CreateCollectionsIfNotExist(db, locale).Wait();
+            CreateCollectionsIfNotExist(db, locale).Wait();
 
             return factory;
         }
@@ -44,11 +45,11 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Bootstrap
             await _client.DropDatabaseAsync(_databaseName);
         }
 
-        public async Task CreateCollectionsIfNotExist(IMongoDatabase db, string locale)
+        public static async Task CreateCollectionsIfNotExist(IMongoDatabase db, string locale)
         {
-            foreach (var collectionName in (MongoDbCollectionName[])Enum.GetValues(typeof(MongoDbCollectionName)))
+            foreach (MongoDbCollectionName collectionName in (MongoDbCollectionName[])Enum.GetValues(typeof(MongoDbCollectionName)))
             {
-                var collections = await db.ListCollectionsAsync(new ListCollectionsOptions
+                IAsyncCursor<BsonDocument> collections = await db.ListCollectionsAsync(new ListCollectionsOptions
                 { Filter = new BsonDocument("name", collectionName.ToString()) });
 
                 if (!await collections.AnyAsync())
@@ -87,9 +88,9 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Bootstrap
             }
         }
 
-        public async Task DeleteAllCollections(IMongoDatabase db)
+        public static async Task DeleteAllCollections(IMongoDatabase db)
         {
-            foreach (var collectionName in (MongoDbCollectionName[])Enum.GetValues(typeof(MongoDbCollectionName)))
+            foreach (MongoDbCollectionName collectionName in (MongoDbCollectionName[])Enum.GetValues(typeof(MongoDbCollectionName)))
             {
                 await db.DropCollectionAsync(collectionName.ToString());
             }

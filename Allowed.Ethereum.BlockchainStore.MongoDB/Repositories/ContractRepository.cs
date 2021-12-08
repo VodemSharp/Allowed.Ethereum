@@ -5,6 +5,7 @@ using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
 using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.RPC.Eth.DTOs;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
@@ -19,30 +20,28 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task<bool> ExistsAsync(string contractAddress)
         {
-            var filter = CreateDocumentFilter(contractAddress);
+            FilterDefinition<MongoDbContract> filter = CreateDocumentFilter(contractAddress);
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
+            MongoDbContract response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
             return response != null;
         }
 
         public async Task FillCacheAsync()
         {
-            using (var cursor = await Collection.FindAsync(FilterDefinition<MongoDbContract>.Empty))
+            using IAsyncCursor<MongoDbContract> cursor = await Collection.FindAsync(FilterDefinition<MongoDbContract>.Empty);
+            while (await cursor.MoveNextAsync().ConfigureAwait(false))
             {
-                while (await cursor.MoveNextAsync().ConfigureAwait(false))
-                {
-                    var batch = cursor.Current;
-                    foreach (var contract in batch)
-                        _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
-                }
+                IEnumerable<MongoDbContract> batch = cursor.Current;
+                foreach (MongoDbContract contract in batch)
+                    _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
             }
         }
 
         public async Task<IContractView> FindByAddressAsync(string contractAddress)
         {
-            var filter = CreateDocumentFilter(contractAddress);
+            FilterDefinition<MongoDbContract> filter = CreateDocumentFilter(contractAddress);
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
+            MongoDbContract response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
             return response;
         }
 
@@ -53,7 +52,7 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task UpsertAsync(ContractCreationVO contractCreation)
         {
-            var contract = contractCreation.MapToStorageEntityForUpsert<MongoDbContract>();
+            MongoDbContract contract = contractCreation.MapToStorageEntityForUpsert<MongoDbContract>();
             await UpsertDocumentAsync(contract);
 
             _cachedContracts.AddOrUpdate(contract.Address, contract,

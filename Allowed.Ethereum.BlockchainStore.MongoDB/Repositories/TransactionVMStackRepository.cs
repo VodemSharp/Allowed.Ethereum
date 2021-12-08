@@ -16,24 +16,24 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task<ITransactionVmStackView> FindByAddressAndTransactionHashAsync(string address, string hash)
         {
-            var filter = CreateDocumentFilter(new MongoDbTransactionVmStack()
+            FilterDefinition<MongoDbTransactionVmStack> filter = CreateDocumentFilter(new MongoDbTransactionVmStack()
             { Address = address, TransactionHash = hash });
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync();
+            MongoDbTransactionVmStack response = await Collection.Find(filter).SingleOrDefaultAsync();
             return response;
         }
 
         public async Task<ITransactionVmStackView> FindByTransactionHashAsync(string hash)
         {
-            var filter = CreateDocumentFilter(new MongoDbTransactionVmStack() { TransactionHash = hash });
+            FilterDefinition<MongoDbTransactionVmStack> filter = CreateDocumentFilter(new MongoDbTransactionVmStack() { TransactionHash = hash });
 
-            var response = await Collection.Find(filter).SingleOrDefaultAsync();
+            MongoDbTransactionVmStack response = await Collection.Find(filter).SingleOrDefaultAsync();
             return response;
         }
 
         public async Task UpsertAsync(string transactionHash, string address, JObject stackTrace)
         {
-            var transactionVmStack = stackTrace.MapToStorageEntityForUpsert<MongoDbTransactionVmStack>(transactionHash, address);
+            MongoDbTransactionVmStack transactionVmStack = stackTrace.MapToStorageEntityForUpsert<MongoDbTransactionVmStack>(transactionHash, address);
             await UpsertDocumentAsync(transactionVmStack);
         }
     }

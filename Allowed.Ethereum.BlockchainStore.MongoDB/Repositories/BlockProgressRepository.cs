@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
 using Nethereum.BlockchainProcessing.ProgressRepositories;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 {
@@ -14,14 +15,14 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task<BigInteger?> GetLastBlockNumberProcessedAsync()
         {
-            var count = await Collection.CountDocumentsAsync(FilterDefinition<MongoDbBlockProgress>.Empty);
+            long count = await Collection.CountDocumentsAsync(FilterDefinition<MongoDbBlockProgress>.Empty);
 
             if (count == 0)
             {
                 return null;
             }
 
-            var max = await Collection.Find(FilterDefinition<MongoDbBlockProgress>.Empty).Limit(1)
+            string max = await Collection.Find(FilterDefinition<MongoDbBlockProgress>.Empty).Limit(1)
                 .Sort(new SortDefinitionBuilder<MongoDbBlockProgress>().Descending(block => block.LastBlockProcessed))
                 .Project(block => block.LastBlockProcessed).SingleOrDefaultAsync().ConfigureAwait(false);
 
@@ -30,7 +31,7 @@ namespace Allowed.Ethereum.BlockchainStore.MongoDB.Repositories
 
         public async Task UpsertProgressAsync(BigInteger blockNumber)
         {
-            var block = blockNumber.MapToStorageEntityForUpsert<MongoDbBlockProgress>();
+            MongoDbBlockProgress block = blockNumber.MapToStorageEntityForUpsert<MongoDbBlockProgress>();
             await UpsertDocumentAsync(block).ConfigureAwait(false);
         }
 
