@@ -5,7 +5,13 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allowed.Ethereum.BlockchainStore.MongoDB", "Allowed.Ethereum.BlockchainStore.MongoDB\Allowed.Ethereum.BlockchainStore.MongoDB.csproj", "{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allowed.Ethereum.Common", "Allowed.Ethereum.Common\Allowed.Ethereum.Common.csproj", "{4FEB39C1-25D2-46D4-8240-F6D00837862A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allowed.Ethereum.Common", "Allowed.Ethereum.Common\Allowed.Ethereum.Common.csproj", "{4FEB39C1-25D2-46D4-8240-F6D00837862A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{93F9BD23-203B-4F4D-B1F1-F587D8569B19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{0899C316-069D-4A9D-A84D-C76D1B7678C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allowed.Ethereum.Sample", "Allowed.Ethereum.Sample\Allowed.Ethereum.Sample.csproj", "{7D9095B6-F3E0-4A13-9D0D-19B3FEC5EA80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +27,18 @@ Global
 		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9095B6-F3E0-4A13-9D0D-19B3FEC5EA80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9095B6-F3E0-4A13-9D0D-19B3FEC5EA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9095B6-F3E0-4A13-9D0D-19B3FEC5EA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9095B6-F3E0-4A13-9D0D-19B3FEC5EA80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C} = {93F9BD23-203B-4F4D-B1F1-F587D8569B19}
+		{4FEB39C1-25D2-46D4-8240-F6D00837862A} = {93F9BD23-203B-4F4D-B1F1-F587D8569B19}
+		{7D9095B6-F3E0-4A13-9D0D-19B3FEC5EA80} = {0899C316-069D-4A9D-A84D-C76D1B7678C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6449117C-84E9-49C2-BE35-8549C637FDA6}
