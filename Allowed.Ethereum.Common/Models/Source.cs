@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Allowed.Ethereum.StandardInputJson.Models
+namespace Allowed.Ethereum.Common.Models
 {
     public class Source
     {

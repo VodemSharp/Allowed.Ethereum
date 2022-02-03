@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Allowed.Ethereum.StandardInputJson.Models
+namespace Allowed.Ethereum.Common.Models
 {
     public class StandardInput
     {
@@ -21,7 +21,7 @@ namespace Allowed.Ethereum.StandardInputJson.Models
 
         [JsonProperty("libraries", NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, Dictionary<string, string>> Libraries { get; set; }
-        
+
         [JsonProperty("outputSelection", NullValueHandling = NullValueHandling.Ignore)]
         public OutputSelection OutputSelection { get; set; }
     }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allowed.Ethereum.StandardInputJson", "Allowed.Ethereum.StandardInputJson\Allowed.Ethereum.StandardInputJson.csproj", "{AB7997A4-6564-4E5C-99A8-B6B28721EC40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allowed.Ethereum.BlockchainStore.MongoDB", "Allowed.Ethereum.BlockchainStore.MongoDB\Allowed.Ethereum.BlockchainStore.MongoDB.csproj", "{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allowed.Ethereum.BlockchainStore.MongoDB", "Allowed.Ethereum.BlockchainStore.MongoDB\Allowed.Ethereum.BlockchainStore.MongoDB.csproj", "{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allowed.Ethereum.Common", "Allowed.Ethereum.Common\Allowed.Ethereum.Common.csproj", "{4FEB39C1-25D2-46D4-8240-F6D00837862A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AB7997A4-6564-4E5C-99A8-B6B28721EC40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB7997A4-6564-4E5C-99A8-B6B28721EC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB7997A4-6564-4E5C-99A8-B6B28721EC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB7997A4-6564-4E5C-99A8-B6B28721EC40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB82B4F-E77C-4F1C-9AD6-87972096DC4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FEB39C1-25D2-46D4-8240-F6D00837862A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

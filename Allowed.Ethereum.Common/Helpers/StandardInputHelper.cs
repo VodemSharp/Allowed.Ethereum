@@ -1,15 +1,14 @@
-﻿using Allowed.Ethereum.StandardInputJson.Models;
+﻿using Allowed.Ethereum.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Allowed.Ethereum.StandardInputJson
+namespace Allowed.Ethereum.Common.Helpers
 {
-    public static class Program
+    public static class StandardInputHelper
     {
-        public static void Main()
+        public static StandardInput GetStandardInput(string contractSource, string contractJson)
         {
-            string json = File.ReadAllText(@"");
-            JObject document = (JObject)JsonConvert.DeserializeObject(json);
+            JObject document = (JObject)JsonConvert.DeserializeObject(contractJson);
             string metadata = document["metadata"].ToString();
 
             StandardInput input = JsonConvert.DeserializeObject<StandardInput>(metadata);
@@ -17,7 +16,7 @@ namespace Allowed.Ethereum.StandardInputJson
             Dictionary<string, Source> newSources = new() { };
             foreach (KeyValuePair<string, Source> source in input.Sources)
             {
-                newSources.Add(source.Key.Replace(@"", string.Empty),
+                newSources.Add(source.Key.Replace(contractSource, string.Empty),
                     new Source()
                     {
                         Keccak256 = source.Value.Keccak256,
@@ -32,14 +31,14 @@ namespace Allowed.Ethereum.StandardInputJson
                 Dictionary<string, Dictionary<string, string>> newLibraries = new() { };
                 foreach (KeyValuePair<string, Dictionary<string, string>> library in input.Libraries)
                 {
-                    newLibraries.Add(library.Key.Replace(@"", string.Empty),
+                    newLibraries.Add(library.Key.Replace(contractSource, string.Empty),
                         library.Value);
                 }
 
                 input.Libraries = newLibraries;
             }
 
-            File.WriteAllText("result.json", JsonConvert.SerializeObject(input, Formatting.Indented));
+            return input;
         }
     }
 }
